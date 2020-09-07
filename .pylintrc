@@ -1,0 +1,14 @@
+[pylint]
+ignore =
+    .venv/*,
+    build/*,
+    dist/*,
+max-args = 6
+max-line-length = 125
+reports = no
+
+[SIMILARITIES]
+min-similarity-lines=7
+
+[TYPECHECK]
+ignored-modules = distutils,py

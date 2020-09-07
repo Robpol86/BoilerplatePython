@@ -1,0 +1,44 @@
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
+[tool.poetry]
+name = "boilerplatepython"
+version = "0.0.1"
+description = "Boilerplate for my Python projects. Using Poetry instead of setuptools."
+authors = ["Robpol86 <robpol86@gmail.com>"]
+license = "BSD-2-Clause"
+classifiers = ["Private :: Do Not Upload"]
+
+[tool.poetry.scripts]
+boilerplatepython = "boilerplatepython:main"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+ipython = {version = "*", optional = true}
+
+[tool.poetry.dev-dependencies]
+coverage = {version = "*", extras = ["toml"]}
+flake8 = "*"
+flake8-docstrings = "*"
+flake8-import-order = "*"
+ipython = "*"
+pep8-naming = "*"
+pylint = "*"
+pytest = "*"
+pytest-cov = "*"
+
+[tool.poetry.extras]
+color = ["ipython"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "^\\s*from",
+    "^\\s*import",
+    "^\\s*raise AssertionError",
+    "^\\s*raise NotImplementedError",
+]
+fail_under = 85
+
+[tool.coverage.run]
+branch = true
