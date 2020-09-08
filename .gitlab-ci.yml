@@ -1,0 +1,30 @@
+variables:
+  GIT_STRATEGY: clone  # Remove when GitLab CI is updated.
+
+# CentOS 8
+
+test:py38-centos8:
+  image: {name: "centos:8"}
+  before_script:
+    - dnf install -y make python38
+    - python3 -m pip install -U pip poetry setuptools wheel
+    - make deps
+  script:
+    - make all
+
+# Debian 10
+
+test:py37-buster: &debian
+  image: {name: "debian:buster"}
+  before_script:
+    - apt-get update && apt-get install -y make python3-pip python3-venv
+    - python3 -m pip install -U pip poetry setuptools wheel
+    - make deps
+  script:
+    - make all
+
+# Debian 11
+
+test:py38-bullseye:
+  <<: *debian
+  image: {name: "debian:bullseye"}
