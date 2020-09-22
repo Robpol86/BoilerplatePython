@@ -1,3 +1,4 @@
+#!/usr/bin/env -S python3 -u
 """CLI entry point."""
 import argparse
 import logging
