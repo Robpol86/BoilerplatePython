@@ -24,7 +24,7 @@ def test_changelog():
     with changelog.open("r") as handle:
         changelog_head = handle.read(1024).splitlines()
 
-    assert [line for line in changelog_head if line.startswith(f"## {version} (")]
+    assert [line for line in changelog_head if line.startswith(f"## [{version}] - ")]
 
 
 def test_help():

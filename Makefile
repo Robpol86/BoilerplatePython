@@ -14,6 +14,7 @@ poetry.lock:
 .PHONY: deps
 deps: _HELP = Install project dependencies in ./.venv
 deps: .venv/bin/pylint .venv/bin/pytest
+	poetry install
 
 ## Testing
 

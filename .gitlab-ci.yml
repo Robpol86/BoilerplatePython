@@ -6,25 +6,50 @@ variables:
 test:py38-centos8:
   image: {name: "centos:8"}
   before_script:
-    - dnf install -y make python38
-    - python3 -m pip install -U pip poetry setuptools wheel
+    - dnf install -y make python38 && python3 -m pip -V |grep -F 3.8
+    - &install_poetry |
+      python3 -m pip install --progress-bar=off -U pip poetry setuptools wheel
     - make deps
   script:
-    - make all
+    - make lint
+    - make test
+    - make it
+
+# Fedora Rawhide
+
+test:py39-fedora:
+  image: {name: "fedora:rawhide"}
+  before_script:
+    - dnf install -y make python3-pip && python3 -m pip -V |grep -F 3.9
+    - *install_poetry
+    - make deps
+  script:
+    - echo make lint  # TODO: https://github.com/PyCQA/pylint/issues/3882
+    - make test
+    - make it
 
 # Debian 10
 
-test:py37-buster: &debian
+test:py37-buster:
   image: {name: "debian:buster"}
   before_script:
-    - apt-get update && apt-get install -y make python3-pip python3-venv
-    - python3 -m pip install -U pip poetry setuptools wheel
+    - apt-get update && apt-get install -y make python3-pip python3-venv && python3 -m pip -V |grep -F 3.7
+    - *install_poetry
     - make deps
   script:
-    - make all
+    - make lint
+    - make test
+    - make it
 
 # Debian 11
 
 test:py38-bullseye:
-  <<: *debian
   image: {name: "debian:bullseye"}
+  before_script:
+    - apt-get update && apt-get install -y make python3-pip python3-venv && python3 -m pip -V |grep -F 3.8
+    - *install_poetry
+    - make deps
+  script:
+    - make lint
+    - make test
+    - make it
