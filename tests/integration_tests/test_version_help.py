@@ -1,5 +1,6 @@
 """Tests."""
 import subprocess
+import sys
 from pathlib import Path
 
 
@@ -10,7 +11,7 @@ def test_version():
     version_poetry = output.split()[1].decode("utf8")
 
     # Get version from program.
-    output = subprocess.check_output(["python", "-m", "boilerplatepython", "-V"]).strip()
+    output = subprocess.check_output([sys.executable, "-m", "boilerplatepython", "-V"]).strip()
     version_program = output.decode("utf8")
 
     assert version_poetry == version_program
@@ -18,7 +19,7 @@ def test_version():
 
 def test_changelog():
     """Verify current version is included in the changelog file."""
-    version = subprocess.check_output(["python", "-m", "boilerplatepython", "-V"]).strip().decode("utf8")
+    version = subprocess.check_output([sys.executable, "-m", "boilerplatepython", "-V"]).strip().decode("utf8")
     changelog = Path(__file__).parent.parent.parent / "CHANGELOG.md"
 
     with changelog.open("r") as handle:
@@ -29,7 +30,7 @@ def test_changelog():
 
 def test_help():
     """Verify --help."""
-    command = ["python", "-m", "boilerplatepython", "--help"]
+    command = [sys.executable, "-m", "boilerplatepython", "--help"]
 
     output = subprocess.check_output(command)
     assert b"show this help message and exit" in output

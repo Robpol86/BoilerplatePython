@@ -3,7 +3,7 @@ disable =
     fixme,
 good-names =
     i,j,k,ex,Run,_,
-    fd,
+    x,y,z,fd,
 ignore =
     .venv/*,
     build/*,

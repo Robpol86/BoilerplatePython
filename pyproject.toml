@@ -15,18 +15,25 @@ boilerplatepython = "boilerplatepython:main"
 
 [tool.poetry.dependencies]
 python = "^3.7"
+# Project dependencies.
+# <placeholder>
+# Optional dependencies.
 ipython = {version = "*", optional = true}
 
 [tool.poetry.dev-dependencies]
 coverage = {version = "*", extras = ["toml"]}
+# Linters.
 flake8 = "*"
 flake8-docstrings = "*"
 flake8-import-order = "*"
-ipython = "*"
 pep8-naming = "*"
 pylint = "*"
+# Tests.
 pytest = "*"
 pytest-cov = "*"
+pytest-icdiff = "*"
+# Project.
+ipython = "*"
 
 [tool.poetry.extras]
 color = ["ipython"]

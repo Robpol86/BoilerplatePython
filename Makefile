@@ -1,4 +1,5 @@
 .DEFAULT_GOAL = help
+PROJECT_NAME = boilerplatepython
 export POETRY_VIRTUALENVS_IN_PROJECT = true
 
 ## Dependencies
@@ -7,42 +8,38 @@ poetry.lock: _HELP = Lock dependency versions to file
 poetry.lock:
 	poetry lock
 
-.venv/bin/%: poetry.lock
-	poetry install
-	test -f $@ && touch $@
-
 .PHONY: deps
-deps: _HELP = Install project dependencies in ./.venv
-deps: .venv/bin/pylint .venv/bin/pytest
+deps: _HELP = Install project dependencies
+deps:
 	poetry install
 
 ## Testing
 
 .PHONY: lint
 lint: _HELP = Run linters
-lint: .venv/bin/flake8 .venv/bin/pylint
+lint: deps
 	poetry check
-	poetry run flake8 --application-import-names boilerplatepython,tests
-	poetry run pylint boilerplatepython tests
+	poetry run flake8 --application-import-names $(PROJECT_NAME),tests
+	poetry run pylint $(PROJECT_NAME) tests
 
 .PHONY: test
 test: _HELP = Run unit tests
-test: .venv/bin/pytest
-	poetry run pytest --cov boilerplatepython tests/unit_tests
+test: deps
+	poetry run pytest --cov=$(PROJECT_NAME) --cov-report=html tests/unit_tests
 
 .PHONY: testpdb
 testpdb: _HELP = Run unit tests and drop into the debugger on failure
-testpdb: .venv/bin/pytest
+testpdb: deps
 	poetry run pytest --pdb tests/unit_tests
 
 .PHONY: it
 it: _HELP = Run integration tests
-it: .venv/bin/pytest
+it: deps
 	poetry run pytest tests/integration_tests
 
 .PHONY: itpdb
 itpdb: _HELP = Run integration tests and drop into the debugger on failure
-itpdb: .venv/bin/pytest
+itpdb: deps
 	poetry run pytest --pdb tests/integration_tests
 
 .PHONY: all
@@ -53,6 +50,7 @@ all: lint test it
 
 clean: _HELP = Remove temporary files
 clean:
+	poetry env list |cut -d" " -f1 |xargs poetry env remove &>/dev/null
 	rm -rf *.egg-info/ *cache*/ .*cache*/ .coverage .venv/ dist/
 
 define MAKEFILE_HELP_AWK

@@ -3,8 +3,20 @@ import logging
 import sys
 import warnings
 from shutil import get_terminal_size
-from sys import stdout as sys_stdout
-from typing import Dict, Optional
+from typing import Optional
+
+LOG_FORMAT_DEFAULT = (
+    "%(asctime)s "
+    "[%(levelcolor1)s%(levelname)-8s%(levelcolor2)s] "
+    "%(colorA1)s%(funcName)s:%(lineno)s:%(colorA2)s "
+    "%(message)s"
+)
+LOG_FORMAT_NARROW = (
+    "%(asctime)s "
+    "%(levelcolor1)s%(shortlevelname)s%(levelcolor2)s: "
+    "%(message)s"
+)
+STDOUT_ISATTY = sys.stdout.isatty()
 
 
 # pylint: disable=too-few-public-methods
@@ -44,26 +56,11 @@ class LogFormatter(logging.Formatter):
     default_time_format = "%Y-%m-%dT%H:%M:%S"
     default_time_format_narrow = "%dT%H:%M:%S"
     default_msec_format = "%s.%03d"
-    FORMAT_EXTENDED = (
-        "%(asctime)s "
-        "[%(levelcolor1)s%(levelname)-8s%(levelcolor2)s] "
-        "%(colorA1)s%(funcName)s:%(lineno)s:%(colorA2)s "
-        "%(message)s"
-        "%(bell)s"
-    )
-    FORMAT_EXTENDED_NARROW = (
-        "%(asctime)s "
-        "%(levelcolor1)s%(shortlevelname)s%(levelcolor2)s: "
-        "%(message)s"
-        "%(bell)s"
-    )
-    FORMAT_LEVEL = "%(levelcolor1)s%(levelname)s%(levelcolor2)s: %(message)s%(bell)s"
-    FORMAT_SIMPLE = "%(message)s%(bell)s"
 
     def __init__(
             self,
-            fmt: str = FORMAT_LEVEL,
-            bells: Dict[int, str] = None,
+            fmt: Optional[str] = None,
+            force_wide: bool = False,
             colors: bool = False,
             traceback: bool = True,
             **kwargs,
@@ -71,11 +68,16 @@ class LogFormatter(logging.Formatter):
         """Class constructor.
 
         :param fmt: Format string.
-        :param bells: Add terminal bell characters to "bell" formatter field for these logging levels.
+        :param force_wide: Don't automatically use narrow format in narrow terminals.
         :param colors: Add color escape sequences to color formatter fields.
         :param traceback: Print tracebacks for logging.exception().
         """
-        self.bells = bells or {}
+        if fmt is None:
+            if force_wide or get_terminal_size().columns > 110:
+                fmt = LOG_FORMAT_DEFAULT
+            else:
+                fmt = LOG_FORMAT_NARROW
+                self.default_time_format = self.default_time_format_narrow
         self.colors = colors
         self.traceback = traceback
         self.color_codes_flattened = {
@@ -86,7 +88,6 @@ class LogFormatter(logging.Formatter):
 
     def formatMessage(self, record: logging.LogRecord) -> str:  # noqa: N802
         """Add custom formatter fields."""
-        record.bell = self.bells.get(record.levelno, "")
         color_codes_flattened = self.color_codes_flattened
         record.levelcolor1, record.levelcolor2 = color_codes_flattened.get(record.levelno, ["", ""])
         record.colorA1, record.colorA2 = color_codes_flattened.get("colorA", ["", ""])
@@ -108,21 +109,21 @@ class LogFormatter(logging.Formatter):
 
 
 def setup_logging(
-        bells: bool = False,
         colors: bool = False,
-        extended: int = 0,
+        force_wide: bool = False,
         verbose: int = 0,
         logger_name: Optional[str] = None,
+        **kwargs,
 ) -> logging.Logger:
     """Initialize console logging.
 
     Info and below go to stdout, others go to stderr.
 
-    :param bells: Add terminal bell characters to warning and error messages (auto if None depending on stdout being a tty).
     :param colors: Auto if None depending on stdout being a tty.
-    :param extended: Print timestamps, all log levels, and other log data (>1: don't automatically use narrow format).
+    :param force_wide: Don't automatically use narrow format in narrow terminals.
     :param verbose: Verbosity of logging (<0: quiet, 0: normal, >=1: DEBUG statements, >=2: warnings, >=3: tracebacks).
     :param logger_name: Which logger to set handlers to (used for testing, default is root logger).
+    :param kwargs: Passed to LogFormatter.
 
     :return: The root logger (used for testing).
     """
@@ -138,40 +139,19 @@ def setup_logging(
     logger.disabled = False
     logger.setLevel(logging.DEBUG if verbose else logging.INFO)
 
-    # Bells.
-    if bells is None:
-        bells = sys_stdout.isatty()
-    if bells:
-        bells_dict = {logging.WARNING: "\007\007", logging.ERROR: "\007\007\007", logging.CRITICAL: "\007\007\007\007"}
-    else:
-        bells_dict = {}
-
     # Automatic colors.
     if colors is None:
-        colors = sys_stdout.isatty()
-
-    # Decide on formatters.
-    if extended:
-        if extended > 1 or get_terminal_size().columns > 110:
-            fmt = LogFormatter.FORMAT_EXTENDED
-        else:
-            fmt = LogFormatter.FORMAT_EXTENDED_NARROW
-            LogFormatter.default_time_format = LogFormatter.default_time_format_narrow
-        fmt_stdout = LogFormatter(fmt, bells=bells_dict, colors=colors, traceback=verbose >= 3)
-        fmt_stderr = fmt_stdout
-    else:
-        fmt_stdout = LogFormatter(LogFormatter.FORMAT_SIMPLE, bells=bells_dict, colors=colors, traceback=verbose >= 3)
-        fmt_stderr = LogFormatter(LogFormatter.FORMAT_LEVEL, bells=bells_dict, colors=colors, traceback=verbose >= 3)
+        colors = STDOUT_ISATTY
 
     # Initialize stream logging.
     handler_stdout = logging.StreamHandler(sys.stdout)
-    handler_stdout.setFormatter(fmt_stdout)
+    handler_stdout.setFormatter(LogFormatter(force_wide=force_wide, colors=colors, traceback=verbose >= 3, **kwargs))
     handler_stdout.setLevel(logging.DEBUG)
     handler_stdout.addFilter(InfoLogFilter())
     logger.addHandler(handler_stdout)
 
     handler_stderr = logging.StreamHandler(sys.stderr)
-    handler_stderr.setFormatter(fmt_stderr)
+    handler_stderr.setFormatter(handler_stdout.formatter)
     handler_stderr.setLevel(logging.WARNING)
     logger.addHandler(handler_stderr)
 

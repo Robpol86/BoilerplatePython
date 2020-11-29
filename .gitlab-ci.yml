@@ -1,32 +1,6 @@
 variables:
   GIT_STRATEGY: clone  # Remove when GitLab CI is updated.
-
-# CentOS 8
-
-test:py38-centos8:
-  image: {name: "centos:8"}
-  before_script:
-    - dnf install -y make python38 && python3 -m pip -V |grep -F 3.8
-    - &install_poetry |
-      python3 -m pip install --progress-bar=off -U pip poetry setuptools wheel
-    - make deps
-  script:
-    - make lint
-    - make test
-    - make it
-
-# Fedora Rawhide
-
-test:py39-fedora:
-  image: {name: "fedora:rawhide"}
-  before_script:
-    - dnf install -y make python3-pip && python3 -m pip -V |grep -F 3.9
-    - *install_poetry
-    - make deps
-  script:
-    - echo make lint  # TODO: https://github.com/PyCQA/pylint/issues/3882
-    - make test
-    - make it
+  PYTEST_ADDOPTS: "--color=yes"
 
 # Debian 10
 
@@ -34,8 +8,10 @@ test:py37-buster:
   image: {name: "debian:buster"}
   before_script:
     - apt-get update && apt-get install -y make python3-pip python3-venv && python3 -m pip -V |grep -F 3.7
-    - *install_poetry
-    - make deps
+    - &install_poetry |
+      python3 -m pip install --progress-bar=off -U pip poetry setuptools wheel
+    - &install_deps |
+      make deps || (sleep 10 && make deps || (sleep 30 && make deps))
   script:
     - make lint
     - make test
@@ -48,8 +24,34 @@ test:py38-bullseye:
   before_script:
     - apt-get update && apt-get install -y make python3-pip python3-venv && python3 -m pip -V |grep -F 3.8
     - *install_poetry
-    - make deps
+    - *install_deps
   script:
     - make lint
+    - make test
+    - make it
+
+# CentOS 8
+
+test:py38-centos8:
+  image: {name: "centos:8"}
+  before_script:
+    - dnf install -y make python38 && python3 -m pip -V |grep -F 3.8
+    - *install_poetry
+    - *install_deps
+  script:
+    - make lint
+    - make test
+    - make it
+
+# Fedora Rawhide
+
+test:py39-fedora:
+  image: {name: "fedora:rawhide"}
+  before_script:
+    - dnf install -y make python3-pip && python3 -m pip -V |grep -F 3.9
+    - *install_poetry
+    - *install_deps
+  script:
+    - echo make lint  # TODO: https://github.com/PyCQA/pylint/issues/3882
     - make test
     - make it
