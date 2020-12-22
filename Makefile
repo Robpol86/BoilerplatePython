@@ -13,6 +13,10 @@ deps: _HELP = Install project dependencies
 deps:
 	poetry install
 
+requirements.txt: _HELP = Generate development requirements.txt
+requirements.txt: poetry.lock
+	poetry export --dev --without-hashes -o $@
+
 ## Testing
 
 .PHONY: lint
@@ -50,8 +54,8 @@ all: lint test it
 
 clean: _HELP = Remove temporary files
 clean:
-	poetry env list |cut -d" " -f1 |xargs poetry env remove &>/dev/null
 	rm -rf *.egg-info/ *cache*/ .*cache*/ .coverage .venv/ dist/
+	find . -name __pycache__ -type d -exec rm -r {} +
 
 define MAKEFILE_HELP_AWK
 BEGIN {

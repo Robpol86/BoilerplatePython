@@ -122,7 +122,7 @@ def test_width(monkeypatch: MonkeyPatch, mode: str):
         monkeypatch.setattr("boilerplatepython.__main__.get_terminal_size", lambda: type("", (), {"columns": 581}))
         expected = WideHelpFormatter.MAX_DEFAULT_WIDTH
     elif mode == "env":
-        monkeypatch.setattr(WideHelpFormatter, "os_environ", dict(COLUMNS="82"))
+        monkeypatch.setattr(WideHelpFormatter, "OS_ENVIRON", dict(COLUMNS="82"))
         expected = 82
     else:
         expected = None

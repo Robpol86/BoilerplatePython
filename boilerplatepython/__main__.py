@@ -47,13 +47,13 @@ class WideHelpFormatter(argparse.HelpFormatter):
     """
 
     MAX_DEFAULT_WIDTH = 120
-    os_environ = os.environ  # For testing.
+    OS_ENVIRON = os.environ  # For testing.
 
     def __init__(self, prog, indent_increment=2, max_help_position=31, width=None):
         """Class constructor."""
         if width is None:
             try:
-                width = int(self.os_environ["COLUMNS"])  # Copied from HelpFormatter code.
+                width = int(self.OS_ENVIRON["COLUMNS"])  # Copied from HelpFormatter code.
             except (KeyError, ValueError):
                 width = min(get_terminal_size().columns, self.MAX_DEFAULT_WIDTH)
         super().__init__(prog, indent_increment, max_help_position, width)

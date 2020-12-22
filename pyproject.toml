@@ -10,8 +10,11 @@ authors = ["Robpol86 <robpol86@gmail.com>"]
 license = "BSD-2-Clause"
 classifiers = ["Private :: Do Not Upload"]
 
+[tool.poetry.urls]
+repository = "https://git.filesrv.rob86.net/robpol86/boilerplatepython"
+
 [tool.poetry.scripts]
-boilerplatepython = "boilerplatepython:main"
+boilerplatepython = "boilerplatepython.__main__:main"
 
 [tool.poetry.dependencies]
 python = "^3.7"
@@ -21,7 +24,6 @@ python = "^3.7"
 ipython = {version = "*", optional = true}
 
 [tool.poetry.dev-dependencies]
-coverage = {version = "*", extras = ["toml"]}
 # Linters.
 flake8 = "*"
 flake8-docstrings = "*"
@@ -29,6 +31,7 @@ flake8-import-order = "*"
 pep8-naming = "*"
 pylint = "*"
 # Tests.
+coverage = {version = "*", extras = ["toml"]}
 pytest = "*"
 pytest-cov = "*"
 pytest-icdiff = "*"

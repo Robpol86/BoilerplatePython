@@ -11,7 +11,7 @@ def test_version():
     version_poetry = output.split()[1].decode("utf8")
 
     # Get version from program.
-    output = subprocess.check_output([sys.executable, "-m", "boilerplatepython", "-V"]).strip()
+    output = subprocess.check_output(["poetry", "run", "boilerplatepython", "-V"]).strip()
     version_program = output.decode("utf8")
 
     assert version_poetry == version_program
@@ -30,7 +30,7 @@ def test_changelog():
 
 def test_help():
     """Verify --help."""
-    command = [sys.executable, "-m", "boilerplatepython", "--help"]
+    command = ["boilerplatepython", "--help"]
 
     output = subprocess.check_output(command)
     assert b"show this help message and exit" in output
