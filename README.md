@@ -2,32 +2,9 @@
 
 Boilerplate for my Python projects. Using Poetry instead of setuptools.
 
-## Local Development
+* Python 3.6, 3.7, 3.8, and 3.9 supported on Linux, macOS, and Windows.
 
-This project runs on Python 3.7 or greater, and relies on [Python Poetry](https://python-poetry.org).
+[![Code style: black][black-badge]][black-link]
 
-To develop on macOS use [Homebrew](https://brew.sh):
-
-```bash
-brew install python@3.7
-brew install poetry
-make clean
-POETRY_VIRTUALENVS_IN_PROJECT=true poetry env use "$(brew --prefix)/opt/python@3.7/bin/python3"
-```
-
-For Debian running from WSL 2:
-
-```bash
-sudo apt-get update && apt-get install python3-pip python3-venv
-python3.7 -m pip install -U pip poetry setuptools wheel
-export PATH="$PATH:$HOME/.local/bin"
-POETRY_VIRTUALENVS_IN_PROJECT=true poetry env use "$(which python3.7)"
-```
-
-Then see if you can run lints and tests:
-
-```bash
-make lint
-make test
-make it
-```
+[black-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
+[black-link]: https://github.com/ambv/black
