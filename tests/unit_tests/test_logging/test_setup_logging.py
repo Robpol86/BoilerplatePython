@@ -120,17 +120,17 @@ def test_colors(capsys: CaptureFixture, logger_name: str):
         "19T21:18:05.415 \033[91mERRO\033[0m: Here be an exception.",
         "Traceback \033[1;36m(most recent call last)\033[0m:",
     ]
-    assert output[:len(expected)] == expected
+    assert output[: len(expected)] == expected
 
 
 @pytest.mark.parametrize("mock_tty", [False, True])
 @pytest.mark.parametrize("colors", [None, False, True])
 def test_auto_colors(
-        capsys: CaptureFixture,
-        monkeypatch: MonkeyPatch,
-        logger_name: str,
-        colors: Optional[bool],
-        mock_tty: bool,
+    capsys: CaptureFixture,
+    monkeypatch: MonkeyPatch,
+    logger_name: str,
+    colors: Optional[bool],
+    mock_tty: bool,
 ):
     """Test automatic colors based on TTY detection.
 

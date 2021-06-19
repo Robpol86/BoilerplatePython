@@ -31,7 +31,7 @@ lint: deps
 .PHONY: test
 test: _HELP = Run unit tests
 test: deps
-	poetry run pytest --cov=$(PROJECT_NAME) --cov-report=html tests/unit_tests
+	poetry run pytest --cov=$(PROJECT_NAME) --cov-report=html --cov-report=xml tests/unit_tests
 
 .PHONY: testpdb
 testpdb: _HELP = Run unit tests and drop into the debugger on failure

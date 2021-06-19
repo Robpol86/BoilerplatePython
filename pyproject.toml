@@ -20,7 +20,7 @@ repository = "https://github.com/Robpol86/BoilerplatePython"
 boilerplatepython = "boilerplatepython.__main__:main"
 
 [tool.poetry.dependencies]
-python = "^3.6.2"
+python = "^3.7"
 # Project dependencies.
 # <placeholder>
 # Optional dependencies.
@@ -47,7 +47,7 @@ color = ["ipython"]
 
 [tool.black]
 line-length = 125
-target-version = ["py36", "py37", "py38", "py39"]
+target-version = ["py37", "py38", "py39"]
 
 [tool.coverage.report]
 exclude_lines = [

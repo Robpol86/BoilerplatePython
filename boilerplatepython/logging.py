@@ -11,11 +11,7 @@ LOG_FORMAT_DEFAULT = (
     "%(colorA1)s%(funcName)s:%(lineno)s:%(colorA2)s "
     "%(message)s"
 )
-LOG_FORMAT_NARROW = (
-    "%(asctime)s "
-    "%(levelcolor1)s%(shortlevelname)s%(levelcolor2)s: "
-    "%(message)s"
-)
+LOG_FORMAT_NARROW = "%(asctime)s %(levelcolor1)s%(shortlevelname)s%(levelcolor2)s: %(message)s"
 STDOUT_ISATTY = sys.stdout.isatty()
 
 
@@ -58,12 +54,12 @@ class LogFormatter(logging.Formatter):
     default_msec_format = "%s.%03d"
 
     def __init__(
-            self,
-            fmt: Optional[str] = None,
-            force_wide: bool = False,
-            colors: bool = False,
-            traceback: bool = True,
-            **kwargs,
+        self,
+        fmt: Optional[str] = None,
+        force_wide: bool = False,
+        colors: bool = False,
+        traceback: bool = True,
+        **kwargs,
     ):
         """Class constructor.
 
@@ -109,11 +105,11 @@ class LogFormatter(logging.Formatter):
 
 
 def setup_logging(
-        colors: bool = False,
-        force_wide: bool = False,
-        verbose: int = 0,
-        logger_name: Optional[str] = None,
-        **kwargs,
+    colors: bool = False,
+    force_wide: bool = False,
+    verbose: int = 0,
+    logger_name: Optional[str] = None,
+    **kwargs,
 ) -> logging.Logger:
     """Initialize console logging.
 
