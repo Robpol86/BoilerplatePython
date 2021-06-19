@@ -12,6 +12,7 @@ poetry.lock:
 deps: _HELP = Install project dependencies
 deps:
 	poetry install
+	poetry run python -V
 
 requirements.txt: _HELP = Generate development requirements.txt
 requirements.txt: poetry.lock
@@ -23,6 +24,7 @@ requirements.txt: poetry.lock
 lint: _HELP = Run linters
 lint: deps
 	poetry check
+	poetry run black --check --color --diff .
 	poetry run flake8 --application-import-names $(PROJECT_NAME),tests
 	poetry run pylint $(PROJECT_NAME) tests
 
@@ -54,8 +56,12 @@ all: lint test it
 
 clean: _HELP = Remove temporary files
 clean:
-	rm -rf *.egg-info/ *cache*/ .*cache*/ .coverage .venv/ dist/
+	rm -rfv *.egg-info/ *cache*/ .*cache*/ .coverage coverage.xml htmlcov/ dist/ docs/_build requirements.txt
 	find . -name __pycache__ -type d -exec rm -r {} +
+
+distclean: _HELP = Remove temporary files including virtualenv
+distclean: clean
+	rm -rf .venv/
 
 define MAKEFILE_HELP_AWK
 BEGIN {

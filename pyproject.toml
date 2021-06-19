@@ -6,18 +6,21 @@ build-backend = "poetry.masonry.api"
 name = "boilerplatepython"
 version = "0.0.1"
 description = "Boilerplate for my Python projects. Using Poetry instead of setuptools."
+readme = "README.md"
 authors = ["Robpol86 <robpol86@gmail.com>"]
 license = "BSD-2-Clause"
-classifiers = ["Private :: Do Not Upload"]
+classifiers = [
+    "Private :: Do Not Upload",
+]
 
 [tool.poetry.urls]
-repository = "https://git.filesrv.rob86.net/robpol86/boilerplatepython"
+repository = "https://github.com/Robpol86/BoilerplatePython"
 
 [tool.poetry.scripts]
 boilerplatepython = "boilerplatepython.__main__:main"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.6.2"
 # Project dependencies.
 # <placeholder>
 # Optional dependencies.
@@ -25,21 +28,26 @@ ipython = {version = "*", optional = true}
 
 [tool.poetry.dev-dependencies]
 # Linters.
-flake8 = "*"
-flake8-docstrings = "*"
-flake8-import-order = "*"
-pep8-naming = "*"
-pylint = "*"
+black = "*"
+flake8 = ">=3.9.2"
+flake8-docstrings = ">=1.6.0"
+flake8-import-order = ">=0.18.1"
+pep8-naming = ">=0.11.1"
+pylint = ">=2.8.3"
 # Tests.
-coverage = {version = "*", extras = ["toml"]}
-pytest = "*"
-pytest-cov = "*"
-pytest-icdiff = "*"
+coverage = {version = ">=5.5", extras = ["toml"]}
+pytest = ">=6.2.4"
+pytest-cov = ">=2.12.1"
+pytest-icdiff = ">=0.5"
 # Project.
-ipython = "*"
+ipython = ">=7.16.1"
 
 [tool.poetry.extras]
 color = ["ipython"]
+
+[tool.black]
+line-length = 125
+target-version = ["py36", "py37", "py38", "py39"]
 
 [tool.coverage.report]
 exclude_lines = [
@@ -52,3 +60,22 @@ fail_under = 85
 
 [tool.coverage.run]
 branch = true
+
+[tool.pylint.FORMAT]
+disable = ["fixme"]
+good-names = ["i", "j", "k", "ex", "Run", "_", "x", "y", "z", "fd"]
+ignore = [".venv/*", "build/*", "dist/*"]
+max-args = 6
+max-line-length = 125
+reports = false
+
+[tool.pylint.SIMILARITIES]
+ignore-imports = true
+min-similarity-lines = 7
+
+[tool.pylint.TYPECHECK]
+ignored-modules = ["distutils", "py"]
+
+[tool.pytest.ini_options]
+addopts = "--cov-report=term-missing --durations=15 --showlocals --verbose --verbose"
+log_level = "DEBUG"
