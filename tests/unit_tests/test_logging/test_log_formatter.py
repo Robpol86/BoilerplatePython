@@ -21,11 +21,14 @@ def _init_logger(name: str, formatter: logging.Formatter) -> logging.Logger:
     return logger
 
 
-@pytest.mark.parametrize("force_wide,terminal_width", [
-    (False, 160),
-    (True, 80),
-    (True, 160),
-])
+@pytest.mark.parametrize(
+    "force_wide,terminal_width",
+    [
+        (False, 160),
+        (True, 80),
+        (True, 160),
+    ],
+)
 @pytest.mark.usefixtures("freeze_time")
 def test_wide(capsys: CaptureFixture, monkeypatch: MonkeyPatch, logger_name: str, force_wide: bool, terminal_width: int):
     """Test.

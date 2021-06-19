@@ -102,12 +102,19 @@ def cli(args: Iterable[str] = None) -> Config:
     verbosity_group = parser.add_mutually_exclusive_group()
 
     # Add optional command line arguments.
-    parser.add_argument("-c", "--color", metavar="WHEN", choices=["never", "always", "auto"], default="auto",
-                        help="print colors in log statements and output (never, always, auto; default:\u00A0%(default)s)")
+    parser.add_argument(
+        "-c",
+        "--color",
+        metavar="WHEN",
+        choices=["never", "always", "auto"],
+        default="auto",
+        help="print colors in log statements and output (never, always, auto; default:\u00A0%(default)s)",
+    )
     parser.add_argument("--force-wide", action="store_true", help="force wide logging output")
     verbosity_group.add_argument("-q", "--quiet", action="store_true", help="quiet output, only print errors")
-    verbosity_group.add_argument("-v", "--verbose", action="count", default=0,
-                                 help="verbose mode, multiple -v increase the verbosity")
+    verbosity_group.add_argument(
+        "-v", "--verbose", action="count", default=0, help="verbose mode, multiple -v increase the verbosity"
+    )
     parser.add_argument("-V", "--version", action="version", version=__version__, help="print the program version and exit")
 
     # Parse and return.

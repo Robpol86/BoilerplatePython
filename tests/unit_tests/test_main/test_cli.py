@@ -22,11 +22,15 @@ def test_minimal():
 
 def test_max():
     """Test with as many optional arguments as possible."""
-    config = vars(cli(args=[
-        "--color=never",
-        "--force-wide",
-        "-vvv",
-    ]))
+    config = vars(
+        cli(
+            args=[
+                "--color=never",
+                "--force-wide",
+                "-vvv",
+            ]
+        )
+    )
 
     assert config.pop("prog") in ("boilerplatepython", "pytest", "py.test", "_jb_pytest_runner.py")
     assert config.pop("color") is False
@@ -37,9 +41,12 @@ def test_max():
     assert not config
 
 
-@pytest.mark.parametrize("args", [
-    ["--quiet", "--verbose"],
-])
+@pytest.mark.parametrize(
+    "args",
+    [
+        ["--quiet", "--verbose"],
+    ],
+)
 def test_mutually_exclusive(capsys: CaptureFixture, args: List[str]):
     """Test error handling of mutually exclusive options.
 
