@@ -14,6 +14,7 @@ classifiers = [
 ]
 
 [tool.poetry.urls]
+documentation = "https://rp-boilerplate-python.readthedocs.io"
 repository = "https://github.com/Robpol86/BoilerplatePython"
 
 [tool.poetry.scripts]
@@ -25,6 +26,13 @@ python = "^3.7"
 # <placeholder>
 # Optional dependencies.
 ipython = {version = "*", optional = true}
+# Docs.
+sphinx = {version = "*", optional = true}
+sphinx-copybutton = {version = "*", optional = true}
+sphinx-notfound-page = {version = "*", optional = true}
+sphinx-panels = {version = "*", optional = true}
+sphinx-rtd-theme = {version = "*", optional = true}
+toml = {version = "*", optional = true}
 
 [tool.poetry.dev-dependencies]
 # Linters.
@@ -44,6 +52,7 @@ ipython = ">=7.16.1"
 
 [tool.poetry.extras]
 color = ["ipython"]
+docs = ["sphinx", "sphinx-copybutton", "sphinx-notfound-page", "sphinx-panels", "sphinx-rtd-theme", "toml"]
 
 [tool.black]
 line-length = 125
