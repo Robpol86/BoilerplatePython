@@ -14,7 +14,7 @@ classifiers = [
 ]
 
 [tool.poetry.urls]
-documentation = "https://rp-boilerplate-python.readthedocs.io"
+documentation = "https://boilerplatepython.readthedocs.io"
 repository = "https://github.com/Robpol86/BoilerplatePython"
 
 [tool.poetry.scripts]

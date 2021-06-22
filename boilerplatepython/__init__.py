@@ -1,6 +1,6 @@
 """BoilerplatePython.
 
-https://rp-boilerplate-python.readthedocs.io/
+https://boilerplatepython.readthedocs.io/
 https://github.com/Robpol86/boilerplatepython
 """
 __author__ = "@Robpol86"
