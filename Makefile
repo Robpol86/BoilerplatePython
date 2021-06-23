@@ -50,9 +50,14 @@ itpdb: deps
 
 .PHONY: all
 all: _HELP = Run linters, unit tests, integration tests, and builds
-all: lint test it docs
+all: lint test it docs build
 
 ## Build
+
+.PHONY: build
+build: _HELP = Build Python package (sdist and wheel)
+build:
+	poetry build -n -vvv
 
 docs/_build/html/index.html: deps
 	poetry run sphinx-build -a -E -n -W docs $(@D)
