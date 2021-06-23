@@ -2,7 +2,7 @@
 
 Boilerplate for my Python projects. Using Poetry instead of setuptools.
 
-* Python 3.7, 3.8, and 3.9 supported on Linux, macOS, and Windows.
+* Python 3.6, 3.7, 3.8, and 3.9 supported on Linux, macOS, and Windows.
 
 📖 Full documentation: https://boilerplatepython.readthedocs.io
 
