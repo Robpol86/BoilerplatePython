@@ -25,8 +25,8 @@ lint: _HELP = Run linters
 lint: deps
 	poetry check
 	poetry run black --check --color --diff .
-	poetry run flake8 --application-import-names $(PROJECT_NAME),tests
-	poetry run pylint $(PROJECT_NAME) tests docs/conf.py
+	poetry run flake8 --application-import-names $(PROJECT_NAME),docs,tests
+	poetry run pylint $(PROJECT_NAME) tests docs
 
 .PHONY: test
 test: _HELP = Run unit tests
@@ -60,7 +60,7 @@ build:
 	poetry build -n -vvv
 
 docs/_build/html/index.html: deps
-	poetry run sphinx-build -a -E -n -W docs $(@D)
+	poetry run sphinx-build -a -E -T -n -W docs $(@D)
 	@echo Documentation available here: $@
 
 .PHONY: docs
