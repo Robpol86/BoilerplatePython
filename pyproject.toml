@@ -1,6 +1,6 @@
 [build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "boilerplatepython"
@@ -10,12 +10,9 @@ readme = "README.md"
 authors = ["Robpol86 <robpol86@gmail.com>"]
 license = "BSD-2-Clause"
 classifiers = [
-    "Private :: Do Not Upload",
     "License :: OSI Approved :: BSD License",
+    "Private :: Do Not Upload",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
 ]
 
 [tool.poetry.urls]
@@ -39,7 +36,7 @@ sphinx-panels = {version = "*", optional = true}
 sphinx-rtd-theme = {version = "*", optional = true}
 toml = {version = "*", optional = true}
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 # Linters.
 black = "*"
 flake8 = ">=3.9.2"

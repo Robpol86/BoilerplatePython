@@ -36,6 +36,5 @@ pip install boilerplatepython
 
 ## TODOs
 
-* Bring back PyPI, probably via workflow_dispatch.
 * Update pyproject.
 * Always include docs deps by default, but maybe exclude in CI?
