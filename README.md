@@ -33,3 +33,8 @@ To install run the following:
 ```bash
 pip install boilerplatepython
 ```
+
+## TODOs
+
+* Update pyproject.
+* Always include docs deps by default, but maybe exclude in CI?
