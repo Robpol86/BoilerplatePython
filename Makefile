@@ -71,8 +71,8 @@ docs: docs/_build/html/index.html
 
 clean: _HELP = Remove temporary files
 clean:
-	rm -rfv *.egg-info/ *cache*/ .*cache*/ .coverage coverage.xml htmlcov/ dist/ docs/_build requirements.txt
-	find . -name __pycache__ -type d -exec rm -r {} +
+	rm -rfv *.egg-info/ *cache*/ .*cache*/ .coverage* coverage.xml htmlcov/ dist/ docs/_build/ requirements.txt
+	find . -path '*/.*' -prune -o -name __pycache__ -type d -exec rm -r {} +
 
 distclean: _HELP = Remove temporary files including virtualenv
 distclean: clean
