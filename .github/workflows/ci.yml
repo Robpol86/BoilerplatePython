@@ -18,6 +18,8 @@ jobs:
       PY_COLORS: 1
     steps:
 
+      - uses: actions/checkout@v3
+
       - name: Install Python
         id: py
         uses: actions/setup-python@v4
@@ -29,8 +31,6 @@ jobs:
         uses: abatilo/actions-poetry@v2
         with:
           poetry-version: ${{ matrix.poetry }}
-
-      - uses: actions/checkout@v3
 
       - name: Install dependencies
         run: make init deps
